@@ -136,7 +136,7 @@ USER $UID
 
 STOPSIGNAL SIGINT
 
-ENTRYPOINT [ "dumb-init", "--", "/bin/sh", "-c", "whisperx \"$@\"" ]
+# ENTRYPOINT [ "dumb-init", "--", "/bin/sh", "-c", "whisperx \"$@\"" ]
 
 ARG VERSION
 ARG RELEASE
@@ -198,10 +198,15 @@ ARG WHISPER_MODEL
 ENV WHISPER_MODEL=${WHISPER_MODEL}
 ARG LANG
 ENV LANG=${LANG}
+RUN pip install ctranslate2==4.4.0 flask python-dotenv
+# CMD ['ls']
+USER root
+RUN apt update && apt install -y curl
+EXPOSE 5000
+CMD ["python","./docker-whisperX/api.py"]
 
 # Take the first language from LANG env variable
-ENTRYPOINT [ "dumb-init", "--", "/bin/sh", "-c", "LANG=$(echo ${LANG} | cut -d ' ' -f1); whisperx --model \"${WHISPER_MODEL}\" --language \"${LANG}\" \"$@\"" ]
-
+# ENTRYPOINT [ "dumb-init", "--", "/bin/sh", "-c", "LANG=$(echo ${LANG} | cut -d ' ' -f1); whisperx --model \"${WHISPER_MODEL}\" --language \"${LANG}\" \"$@\"" ]
 ARG VERSION
 ARG RELEASE
 LABEL version=${VERSION} \
