@@ -46,7 +46,7 @@ def transcribe_audio(audio_file):
     result = whisperx.assign_word_speakers(diarize_segments, result)
     # print(diarize_segments)
     # print(result["segments"]) # segments are now assigned speaker IDs
-    return result['segments']
+    return result
 app = Flask(__name__)
 
 @app.route('/transcribe', methods=['POST'])
